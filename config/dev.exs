@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :mtgExchange, MtgExchange.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "mtgexchange",
+  password: "mtgexchange",
   hostname: "localhost",
   database: "mtgexchange_dev",
   stacktrace: true,
