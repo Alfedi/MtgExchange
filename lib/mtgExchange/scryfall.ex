@@ -3,15 +3,18 @@ defmodule MtgExchange.Scryfall do
 
   def client() do
     middlewares = [
-      Tesla.Middleware.BaseUrl,
-      "https://api.scryfall.com",
+      {Tesla.Middleware.BaseUrl, "https://api.scryfall.com"},
       Tesla.Middleware.JSON
     ]
 
     Tesla.client(middlewares)
   end
 
-  def cardById(client, name) do
-    Tesla.get(client, )
+  def fuzzy_search(client, name) do
+    get(client, "/cards/named", query: [fuzzy: name])
+  end
+
+  def id_search(client, id) do
+    get(client, "/cards/" <> id)
   end
 end
