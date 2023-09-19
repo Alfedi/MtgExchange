@@ -17,6 +17,7 @@ defmodule MtgExchange.Repo.Migrations.CreateTables do
       add :receive_user, references(:users, name: "receive_user", on_delete: :delete_all)
       add :offer_list, {:array, :string}
       add :receive_list, {:array, :string}
+      add :status, :string
     end
   end
 end

@@ -34,7 +34,7 @@ defmodule MtgExchange.Models.Exchanges do
       foreign_key: :uuid,
       where: [user: :receive_user]
 
-    field :done, :boolean, default: false
+    field :status, Ecto.Enum, values: [:pending, :cancelled, :done]
 
     timestamps()
   end
