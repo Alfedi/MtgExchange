@@ -1,4 +1,4 @@
-defmodule MtgExchangeWeb.PageHTML do
+defmodule MtgExchangeWeb.UserHTML do
   use MtgExchangeWeb, :html
   import Phoenix.HTML.Form
 

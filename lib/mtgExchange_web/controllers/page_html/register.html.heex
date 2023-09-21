@@ -1,0 +1,6 @@
+<h1>REGISTRO</h1>
+
+<%= form_for @conn.params, "#", fn f -> %>
+Name: <%= text_input f, :name %>
+<%= submit "Register" %>
+<% end %>

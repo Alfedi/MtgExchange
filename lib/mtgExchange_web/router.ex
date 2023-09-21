@@ -18,6 +18,9 @@ defmodule MtgExchangeWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/users", UserController, :users
+    post "/register", UserController, :new_user
+    get "/register", UserController, :register
   end
 
   # Other scopes may use custom stacks.
@@ -27,7 +30,6 @@ defmodule MtgExchangeWeb.Router do
 
   # Enable Swoosh mailbox preview in development
   if Application.compile_env(:mtgExchange, :dev_routes) do
-
     scope "/dev" do
       pipe_through :browser
 

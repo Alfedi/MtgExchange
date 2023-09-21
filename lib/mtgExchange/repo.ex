@@ -1,4 +1,7 @@
 defmodule MtgExchange.Repo do
+  alias MtgExchange.Models.Users
+  import Ecto.Query
+
   use Ecto.Repo,
     otp_app: :mtgExchange,
     adapter: Ecto.Adapters.Postgres
@@ -21,6 +24,10 @@ defmodule MtgExchange.Repo do
       nil -> {:error, "No such user"}
       user -> {:ok, user}
     end
+  end
+
+  def get_users_name() do
+    from(u in Users, select: u.name) |> all
   end
 
   def delete_user(user) do
