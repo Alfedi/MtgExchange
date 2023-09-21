@@ -4,6 +4,7 @@ defmodule MtgExchange.Repo.Migrations.CreateTables do
   def change do
     create table(:users) do
       add :name, :string
+      timestamps()
     end
 
     create table(:cards, primary_key: false) do
@@ -18,6 +19,7 @@ defmodule MtgExchange.Repo.Migrations.CreateTables do
       add :offer_list, {:array, :string}
       add :receive_list, {:array, :string}
       add :status, :string
+      timestamps()
     end
   end
 end

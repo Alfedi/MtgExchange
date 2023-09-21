@@ -1,5 +1,6 @@
 defmodule MtgExchange.Models.Cards do
   use Ecto.Schema
+  import Ecto.Changeset
 
   schema "cards" do
     field :uuid, :string, primary_key: true
@@ -10,12 +11,18 @@ end
 
 defmodule MtgExchange.Models.Users do
   use Ecto.Schema
+  import Ecto.Changeset
 
   schema "users" do
     field :name, :string
     has_many :cards, MtgExchange.Models.Cards, foreign_key: :user
 
     timestamps()
+  end
+
+  def changeset(user, params) do
+    user
+    |> cast(params, [:name])
   end
 end
 
