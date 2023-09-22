@@ -1,5 +1,5 @@
 defmodule MtgExchange.Repo do
-  alias MtgExchange.Models.Users
+  alias MtgExchange.Account.User
   import Ecto.Query
 
   use Ecto.Repo,
@@ -27,7 +27,7 @@ defmodule MtgExchange.Repo do
   end
 
   def get_users_name() do
-    from(u in Users, select: u.name) |> all
+    from(u in User, select: u.name) |> all
   end
 
   def delete_user(user) do
