@@ -10,11 +10,11 @@ defmodule MtgExchange.Scryfall do
     Tesla.client(middlewares)
   end
 
-  def fuzzy_search(client, name) do
-    get(client, "/cards/named", query: [fuzzy: name])
+  def fuzzy_search(name) do
+    get(client(), "/cards/named", query: [fuzzy: name])
   end
 
-  def id_search(client, id) do
-    get(client, "/cards/" <> id)
+  def id_search(id) do
+    get(client(), "/cards/" <> id)
   end
 end

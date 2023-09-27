@@ -22,8 +22,6 @@ defmodule MtgExchangeWeb.Router do
 
     get "/", PageController, :home
     get "/users", UserController, :users
-    post "/register", UserController, :new_user
-    get "/register", UserController, :register
   end
 
   # Other scopes may use custom stacks.
@@ -63,6 +61,7 @@ defmodule MtgExchangeWeb.Router do
       on_mount: [{MtgExchangeWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/cards", CardsListLive, :new
     end
   end
 

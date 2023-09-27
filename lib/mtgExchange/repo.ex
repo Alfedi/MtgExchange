@@ -1,4 +1,5 @@
 defmodule MtgExchange.Repo do
+  alias MtgExchange.Models.Cards
   alias MtgExchange.Account.User
   import Ecto.Query
 
@@ -20,7 +21,7 @@ defmodule MtgExchange.Repo do
   end
 
   def get_user(id) do
-    case get(Users, id) do
+    case MtgExchange.Repo.get(User, id) do
       nil -> {:error, "No such user"}
       user -> {:ok, user}
     end
@@ -41,7 +42,7 @@ defmodule MtgExchange.Repo do
   # ---------------
 
   def insert_card(card) do
-    case insert(card) do
+    case MtgExchange.Repo.insert(card) do
       {:ok, _} = res -> res
       error -> error
     end
@@ -59,6 +60,15 @@ defmodule MtgExchange.Repo do
       {:ok, _} = res -> res
       error -> error
     end
+  end
+
+  def list_cards_from_user(user_id) do
+    query =
+      from c in Cards,
+        select: c.uuid,
+        where: c.user == ^user_id
+
+    {:ok, query |> all}
   end
 
   # Exchange Operations

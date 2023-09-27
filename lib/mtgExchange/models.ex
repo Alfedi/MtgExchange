@@ -1,6 +1,8 @@
 defmodule MtgExchange.Models.Cards do
   use Ecto.Schema
 
+  @primary_key false
+
   schema "cards" do
     field :uuid, :string, primary_key: true
     field :quantity, :integer

@@ -12,6 +12,14 @@
       <a href="/users" class="hover:text-zin.700">
         Users
       </a>
+      <%= if @current_user do %>
+      <.link
+	href={~p"/cards"}
+	class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+	>
+	Cards
+      </.link>
+      <% end %>
       <a href="/exchanges" class="hover:text-zinc-700">
         Exchanges
       </a>

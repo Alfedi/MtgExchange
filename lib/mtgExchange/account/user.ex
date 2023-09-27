@@ -6,7 +6,7 @@ defmodule MtgExchange.Account.User do
     field :name, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
-
+    has_many :cards, MtgExchange.Models.Cards, foreign_key: :user
     timestamps()
   end
 
