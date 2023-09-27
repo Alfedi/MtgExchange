@@ -17,4 +17,8 @@ defmodule MtgExchange.Scryfall do
   def id_search(id) do
     get(client(), "/cards/" <> id)
   end
+
+  def autocomplete(term) do
+    get(client(), "/cards/autocomplete", query: [q: term])
+  end
 end
