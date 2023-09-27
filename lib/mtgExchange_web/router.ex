@@ -17,13 +17,6 @@ defmodule MtgExchangeWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", MtgExchangeWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
-    get "/users", UserController, :users
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", MtgExchangeWeb do
   #   pipe_through :api
@@ -61,19 +54,22 @@ defmodule MtgExchangeWeb.Router do
       on_mount: [{MtgExchangeWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-      live "/cards", CardsListLive, :new
+      live "/cards", CardsListLive, :me
+      live "/users/:id/cards", CardsListLive, :others
     end
   end
 
   scope "/", MtgExchangeWeb do
     pipe_through [:browser]
 
+    get "/", PageController, :home
     delete "/users/log_out", UserSessionController, :delete
 
     live_session :current_user,
       on_mount: [{MtgExchangeWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
+      live "/users", UsersLive, :new
     end
   end
 end

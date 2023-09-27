@@ -27,8 +27,8 @@ defmodule MtgExchange.Repo do
     end
   end
 
-  def get_users_name() do
-    from(u in User, select: u.name) |> all
+  def get_users() do
+    from(u in User) |> all
   end
 
   def delete_user(user) do
