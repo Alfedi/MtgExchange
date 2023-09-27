@@ -1,7 +1,7 @@
 defmodule MtgExchangeWeb.CardsListLive do
   use MtgExchangeWeb, :live_view
 
-  def render(assigns) do
+  def render(%{live_action: :me} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
       <.header class="text-center">
@@ -37,10 +37,43 @@ defmodule MtgExchangeWeb.CardsListLive do
     """
   end
 
-  def mount(_params, _session, socket) do
+  def render(%{live_action: :others} = assigns) do
+    ~H"""
+    <div class="mx-auto max-w-sm">
+      <.header class="text-center">
+        Card List
+      </.header>
+      <%= for c <- @cards do %>
+        <%= c["name"] %><br />
+      <% end %>
+    </div>
+    """
+  end
+
+  def mount(params, _session, socket) do
     # Card list
-    cards = get_user_cards_name(socket.assigns.current_user)
-    {:ok, assign(socket, query: nil, result: nil, loading: false, matches: [], cards: cards)}
+
+    case socket.assigns.live_action == :me do
+      true ->
+        {:ok,
+         assign(socket,
+           query: nil,
+           result: nil,
+           loading: false,
+           matches: [],
+           cards: get_user_cards_name(socket.assigns.current_user.id)
+         )}
+
+      false ->
+        {:ok,
+         assign(socket,
+           query: nil,
+           result: nil,
+           loading: false,
+           matches: [],
+           cards: get_user_cards_name(params["id"])
+         )}
+    end
   end
 
   def handle_event("suggest", %{"q" => query}, socket) when byte_size(query) <= 100 do
@@ -74,8 +107,8 @@ defmodule MtgExchangeWeb.CardsListLive do
     {:noreply, assign(socket, loading: false, result: card, matches: [])}
   end
 
-  defp get_user_cards_name(user) do
-    {:ok, list} = MtgExchange.Repo.list_cards_from_user(user.id)
+  defp get_user_cards_name(user_id) do
+    {:ok, list} = MtgExchange.Repo.list_cards_from_user(user_id)
 
     Enum.map(list, fn x ->
       {:ok, %{body: body}} = MtgExchange.Scryfall.id_search(x)
