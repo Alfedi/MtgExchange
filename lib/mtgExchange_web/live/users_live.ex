@@ -9,7 +9,7 @@ defmodule MtgExchangeWeb.UsersLive do
       </.header>
       <.table id="users" rows={@users}>
         <:col :let={user} label="Name"><%= user.name %></:col>
-        <:col :let={user} label=""><.link href={~p"/users/#{user.id}/cards"}>View Cards</.link></:col>
+        <:action :let={user}><.link href={~p"/users/#{user.id}/cards"}>View Cards</.link></:action>
       </.table>
     </div>
     """
