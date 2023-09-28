@@ -28,7 +28,7 @@ defmodule MtgExchangeWeb.CardsListLive do
       </form>
 
       <.header class="text-center">
-        Card List
+        Your Cards
       </.header>
       <%= for c <- @cards do %>
         <%= c["name"] %><br />
@@ -41,7 +41,7 @@ defmodule MtgExchangeWeb.CardsListLive do
     ~H"""
     <div class="mx-auto max-w-sm">
       <.header class="text-center">
-        Card List
+        <%= @name %>'s Cards
       </.header>
       <%= for c <- @cards do %>
         <%= c["name"] %><br />
@@ -65,13 +65,16 @@ defmodule MtgExchangeWeb.CardsListLive do
          )}
 
       false ->
+        {:ok, %{name: name}} = MtgExchange.Repo.get_user(params["id"])
+
         {:ok,
          assign(socket,
            query: nil,
            result: nil,
            loading: false,
            matches: [],
-           cards: get_user_cards_name(params["id"])
+           cards: get_user_cards_name(params["id"]),
+           name: name
          )}
     end
   end
