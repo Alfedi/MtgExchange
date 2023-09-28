@@ -9,7 +9,13 @@ defmodule MtgExchangeWeb.UsersLive do
       </.header>
       <.table id="users" rows={@users}>
         <:col :let={user} label="Name"><%= user.name %></:col>
-        <:action :let={user}><.link href={~p"/users/#{user.id}/cards"}>View Cards</.link></:action>
+        <:action :let={user}>
+          <%= if user.id == @current_user.id do %>
+            <.link href={~p"/cards"}>View Cards</.link>
+          <% else %>
+            <.link href={~p"/users/#{user.id}/cards"}>View Cards</.link>
+          <% end %>
+        </:action>
       </.table>
     </div>
     """
