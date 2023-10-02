@@ -30,10 +30,10 @@ defmodule MtgExchange.Repo.Migrations.CreateTables do
     end
 
     create table(:exchanges) do
-      add :offer_user, references(:users, name: "offer_user", on_delete: :delete_all)
-      add :receive_user, references(:users, name: "receive_user", on_delete: :delete_all)
-      add :offer_list, {:array, :string}
-      add :receive_list, {:array, :string}
+      add :user1, references(:users, name: "user1", on_delete: :delete_all)
+      add :user2, references(:users, name: "user2", on_delete: :delete_all)
+      add :user1_list, {:array, :string}
+      add :user2_list, {:array, :string}
       add :status, :string
       timestamps()
     end

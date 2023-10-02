@@ -14,18 +14,13 @@ defmodule MtgExchange.Models.Exchanges do
   use Ecto.Schema
 
   schema "exchanges" do
-    field :offer_user, :integer
-    field :receive_user, :integer
+    field :user1, :integer
+    field :user2, :integer
+    field :user1_list, {:array, :string}
+    field :user2_list, {:array, :string}
 
-    has_many :offer_list, MtgExchange.Models.Cards,
-      foreign_key: :uuid,
-      where: [user: :offer_user]
-
-    has_many :receive_list, MtgExchange.Models.Cards,
-      foreign_key: :uuid,
-      where: [user: :receive_user]
-
-    field :status, Ecto.Enum, values: [:pending, :cancelled, :done]
+    field :status, Ecto.Enum,
+      values: [:ongoing, :cancelled, :wait_confirm_user1, :wait_confirm_user2, :done]
 
     timestamps()
   end

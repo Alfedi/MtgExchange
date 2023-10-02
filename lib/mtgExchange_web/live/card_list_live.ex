@@ -111,10 +111,10 @@ defmodule MtgExchangeWeb.CardsListLive do
   end
 
   defp get_user_cards_name(user_id) do
-    {:ok, list} = MtgExchange.Repo.list_cards_from_user(user_id)
+    list = MtgExchange.Repo.list_cards_from_user(user_id)
 
     Enum.map(list, fn x ->
-      {:ok, %{body: body}} = MtgExchange.Scryfall.id_search(x)
+      {:ok, %{body: body}} = MtgExchange.Scryfall.id_search(x.uuid)
       body
     end)
   end

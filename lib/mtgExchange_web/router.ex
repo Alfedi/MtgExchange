@@ -55,7 +55,8 @@ defmodule MtgExchangeWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
       live "/cards", CardsListLive, :me
-      live "/users/:id/cards", CardsListLive, :others
+      live "/exchanges", ExchangesListLive, :new
+      live "/exchanges/:id", ExchangeLive, :new
     end
   end
 
@@ -70,6 +71,7 @@ defmodule MtgExchangeWeb.Router do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
       live "/users", UsersLive, :new
+      live "/users/:id/cards", CardsListLive, :others
     end
   end
 end
