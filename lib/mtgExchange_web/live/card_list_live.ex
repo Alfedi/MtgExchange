@@ -124,31 +124,48 @@ defmodule MtgExchangeWeb.CardsListLive do
 
   def render(%{live_action: :others} = assigns) do
     ~H"""
-    <div>
-      <.header class="text-center">
+    <div class="absolute">
+      <.header class="text-center mb-5">
         <%= @name %>'s Cards
       </.header>
-      <%= for c <- @cards do %>
-        <%= if ! c.scryfall_object["image_uris"] and c.scryfall_object["card_faces"] do %>
-          <.link href={c.scryfall_object["scryfall_uri"]} target="_blank">
-            <img
-              src={Enum.at(c.scryfall_object["card_faces"], 0)["image_uris"]["normal"]}
-              class="m-1"
-              style="width:251px;height:350px;"
-              alt={c.scryfall_object["name"]}
-            />
-          </.link>
-        <% else %>
-          <.link href={c.scryfall_object["scryfall_uri"]} target="_blank">
-            <img
-              src={c.scryfall_object["image_uris"]["normal"]}
-              class="m-1"
-              style="width:251px;height:350px;"
-              alt={c.scryfall_object["name"]}
-            />
-          </.link>
+      <hr class="mb-5" />
+      <div class="flex flex-row flex-wrap">
+        <%= for c <- @cards do %>
+          <%= if ! c.scryfall_object["image_uris"] and c.scryfall_object["card_faces"] do %>
+            <div class="relative">
+              <.link href={c.scryfall_object["scryfall_uri"]} target="_blank">
+                <img
+                  src={Enum.at(c.scryfall_object["card_faces"], 0)["image_uris"]["normal"]}
+                  class="m-1"
+                  style="width:251px;height:350px;"
+                  alt={c.scryfall_object["name"]}
+                />
+                <div class="absolute bg-black opacity-0 top-0 bottom-0 left-0 right-0 rounded-lg mt-2 ml-2 h-[calc(100%-13px)] w-[calc(100%-13px)] hover:opacity-70">
+                  <div class="absolute text-white mt-10 text-center text-2xl">
+                    <%= c.scryfall_object["name"] %><br /> X <%= c.quantity %>
+                  </div>
+                </div>
+              </.link>
+            </div>
+          <% else %>
+            <div class="relative">
+              <.link href={c.scryfall_object["scryfall_uri"]} target="_blank">
+                <img
+                  src={c.scryfall_object["image_uris"]["normal"]}
+                  class="m-1"
+                  style="width:251px;height:350px;"
+                  alt={c.scryfall_object["name"]}
+                />
+                <div class="absolute bg-black opacity-0 top-0 bottom-0 left-0 right-0 rounded-lg mt-2 ml-2 h-[calc(100%-13px)] w-[calc(100%-13px)] hover:opacity-70">
+                  <div class="absolute text-white mt-10 text-center text-2xl">
+                    <%= c.scryfall_object["name"] %><br /> X <%= c.quantity %>
+                  </div>
+                </div>
+              </.link>
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
     </div>
     """
   end
