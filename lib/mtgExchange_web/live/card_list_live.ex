@@ -25,7 +25,7 @@ defmodule MtgExchangeWeb.CardsListLive do
         <div class="flex flex-row">
           <%= if ! @result["image_uris"] and @result["card_faces"] do %>
             <img
-              src={Enum.at(@result.scryfall_object["card_faces"], 0)["image_uris"]["large"]}
+              src={Enum.at(@result["card_faces"], 0)["image_uris"]["large"]}
               class="m-1"
               alt={@result["name"]}
               style="width:336px;height:468px;"
@@ -47,6 +47,7 @@ defmodule MtgExchangeWeb.CardsListLive do
                 placeholder="How many copies?"
                 autocomplete="off"
                 class="mb-1"
+                value="1"
               />
               <.button>Add Card</.button>
             </form>
