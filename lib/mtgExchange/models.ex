@@ -1,12 +1,11 @@
 defmodule MtgExchange.Models.Cards do
   use Ecto.Schema
 
-  @primary_key false
-
   schema "cards" do
-    field :uuid, :string, primary_key: true
+    field :uuid, :string
     field :quantity, :integer
     field :user, :integer
+    field :scryfall_object, :map
   end
 end
 

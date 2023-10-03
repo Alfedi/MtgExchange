@@ -23,10 +23,11 @@ defmodule MtgExchange.Repo.Migrations.CreateTables do
     create index(:users_tokens, [:user_id])
     create unique_index(:users_tokens, [:context, :token])
 
-    create table(:cards, primary_key: false) do
-      add :uuid, :string, primary_key: true
+    create table(:cards) do
+      add :uuid, :string
       add :quantity, :integer
       add :user, references(:users, name: "user", on_delete: :delete_all)
+      add :scryfall_object, :map
     end
 
     create table(:exchanges) do

@@ -14,6 +14,10 @@ defmodule MtgExchange.Scryfall do
     get(client(), "/cards/named", query: [fuzzy: name])
   end
 
+  def search(name) do
+    get(client(), "/cards/named", query: [exact: name])
+  end
+
   def id_search(id) do
     get(client(), "/cards/" <> id)
   end

@@ -49,7 +49,7 @@ defmodule MtgExchange.Repo do
     end
   end
 
-  def get_card(uuid) do
+  def get_card_by_uuid(uuid) do
     case get(Cards, uuid) do
       nil -> {:error, "No such card"}
       card -> {:ok, card}
