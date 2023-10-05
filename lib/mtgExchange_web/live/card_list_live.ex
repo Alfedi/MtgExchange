@@ -16,28 +16,14 @@ defmodule MtgExchangeWeb.CardsListLive do
           placeholder="Type card name..."
           {%{readonly: @loading}}
           autocomplete="off"
-          class="mb-20"
+          class="mb-10"
         />
         <.button>Search Card</.button>
       </form>
       <!-- Carta resultado -->
       <%= if @result do %>
         <div class="flex flex-row">
-          <%= if ! @result["image_uris"] and @result["card_faces"] do %>
-            <img
-              src={Enum.at(@result["card_faces"], 0)["image_uris"]["large"]}
-              class="m-1"
-              alt={@result["name"]}
-              style="width:336px;height:468px;"
-            />
-          <% else %>
-            <img
-              src={@result["image_uris"]["large"]}
-              class="m-1"
-              alt={@result["name"]}
-              style="width:336px;height:468px;"
-            />
-          <% end %>
+          <.card_match match={@result} width="400px" class="mr-5 mb-5" />
           <div class="flex flex-col">
             <p>Quantity</p>
             <form phx-submit="add_card">
@@ -56,67 +42,22 @@ defmodule MtgExchangeWeb.CardsListLive do
       <% else %>
         <!-- Lista de matches -->
         <div class="flex flex-row flex-wrap">
-          <%= for match <- @matches do %>
-            <.link phx-click="search" phx-value-q={match["name"]}>
-              <%= if ! match["image_uris"] and match["card_faces"] do %>
-                <img
-                  src={Enum.at(match["card_faces"], 0)["image_uris"]["normal"]}
-                  class="m-1"
-                  style="width:251px;height:350px;"
-                  alt={match["name"]}
-                />
-              <% else %>
-                <img
-                  src={match["image_uris"]["normal"]}
-                  class="m-1"
-                  style="width:251px;height:350px;"
-                  alt={match["name"]}
-                />
-              <% end %>
-            </.link>
+          <%= for m <- @matches do %>
+            <.card_match
+              match={m}
+              class="border-4 border-transparent rounded-xl hover:border-sky-600"
+            />
           <% end %>
         </div>
       <% end %>
       <!-- Card List -->
       <hr />
-      <.header class="text-center">
+      <.header class="text-center mb-5 mt-3">
         Your Cards
       </.header>
       <div class="flex flex-row flex-wrap">
         <%= for c <- @cards do %>
-          <%= if ! c.scryfall_object["image_uris"] and c.scryfall_object["card_faces"] do %>
-            <div class="relative">
-              <.link href={c.scryfall_object["scryfall_uri"]} target="_blank">
-                <img
-                  src={Enum.at(c.scryfall_object["card_faces"], 0)["image_uris"]["normal"]}
-                  class="m-1"
-                  style="width:251px;height:350px;"
-                  alt={c.scryfall_object["name"]}
-                />
-                <div class="absolute bg-black opacity-0 top-0 bottom-0 left-0 right-0 rounded-lg mt-2 ml-2 h-[calc(100%-13px)] w-[calc(100%-13px)] hover:opacity-70">
-                  <div class="absolute text-white mt-10 text-center text-2xl w-full">
-                    <%= c.scryfall_object["name"] %><br /> X <%= c.quantity %>
-                  </div>
-                </div>
-              </.link>
-            </div>
-          <% else %>
-            <div class="relative">
-              <.link href={c.scryfall_object["scryfall_uri"]} target="_blank">
-                <img
-                  src={c.scryfall_object["image_uris"]["normal"]}
-                  class="m-1"
-                  style="width:251px;height:350px;"
-                  alt={c.scryfall_object["name"]}
-                />
-                <div class="absolute bg-black opacity-0 top-0 bottom-0 left-0 right-0 rounded-lg mt-2 ml-2 h-[calc(100%-13px)] w-[calc(100%-13px)] hover:opacity-70">
-                  <div class="absolute text-white mt-10 text-center text-2xl w-full">
-                    <%= c.scryfall_object["name"] %><br /> X <%= c.quantity %>
-                  </div>
-                </div>
-              </.link>
-            </div>
-          <% end %>
+          <.card data={c} />
         <% end %>
       </div>
     </div>
@@ -131,41 +72,7 @@ defmodule MtgExchangeWeb.CardsListLive do
       </.header>
       <hr class="mb-5" />
       <div class="flex flex-row flex-wrap">
-        <%= for c <- @cards do %>
-          <%= if ! c.scryfall_object["image_uris"] and c.scryfall_object["card_faces"] do %>
-            <div class="relative">
-              <.link href={c.scryfall_object["scryfall_uri"]} target="_blank">
-                <img
-                  src={Enum.at(c.scryfall_object["card_faces"], 0)["image_uris"]["normal"]}
-                  class="m-1"
-                  style="width:251px;height:350px;"
-                  alt={c.scryfall_object["name"]}
-                />
-                <div class="absolute bg-black opacity-0 top-0 bottom-0 left-0 right-0 rounded-lg mt-2 ml-2 h-[calc(100%-13px)] w-[calc(100%-13px)] hover:opacity-70">
-                  <div class="absolute text-white mt-10 text-center text-2xl w-full">
-                    <%= c.scryfall_object["name"] %><br /> X <%= c.quantity %>
-                  </div>
-                </div>
-              </.link>
-            </div>
-          <% else %>
-            <div class="relative">
-              <.link href={c.scryfall_object["scryfall_uri"]} target="_blank">
-                <img
-                  src={c.scryfall_object["image_uris"]["normal"]}
-                  class="m-1"
-                  style="width:251px;height:350px;"
-                  alt={c.scryfall_object["name"]}
-                />
-                <div class="absolute bg-black opacity-0 top-0 bottom-0 left-0 right-0 rounded-lg mt-2 ml-2 h-[calc(100%-13px)] w-[calc(100%-13px)] hover:opacity-70">
-                  <div class="absolute text-white mt-10 text-center text-2xl w-full">
-                    <%= c.scryfall_object["name"] %><br /> X <%= c.quantity %>
-                  </div>
-                </div>
-              </.link>
-            </div>
-          <% end %>
-        <% end %>
+        <.card data={@cards} />
       </div>
     </div>
     """
@@ -200,7 +107,7 @@ defmodule MtgExchangeWeb.CardsListLive do
 
   def handle_event("suggest", %{"q" => query}, socket)
       when byte_size(query) <= 100 do
-    {:ok, %{body: %{"data" => suggestions}}} = MtgExchange.Scryfall.autocomplete(query)
+    suggestions = MtgExchange.Scryfall.autocomplete(query)
 
     new_suggestions =
       Enum.map(suggestions, fn x ->
@@ -220,8 +127,6 @@ defmodule MtgExchangeWeb.CardsListLive do
   end
 
   def handle_event("add_card", %{"quantity" => quantity}, socket) do
-    IO.inspect(socket)
-
     MtgExchange.Repo.insert_card(%MtgExchange.Models.Cards{
       uuid: socket.assigns.result["id"],
       quantity: quantity |> String.to_integer(),

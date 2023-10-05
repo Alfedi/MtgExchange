@@ -563,6 +563,71 @@ defmodule MtgExchangeWeb.CoreComponents do
     """
   end
 
+  @doc """
+  Renders a card with their front image and a hover overlay with card name and quantity
+
+  ## Examples
+      <.card data={@cards} width=251px />
+  """
+  attr :data, :map, required: true
+  attr :width, :string, default: "251px"
+  attr :class, :string, default: nil
+
+  def card(assigns) do
+    ~H"""
+    <div class="relative">
+      <.link href={@data.scryfall_object["scryfall_uri"]} target="_blank">
+        <img
+          src={
+            if !@data.scryfall_object["image_uris"] and @data.scryfall_object["card_faces"] do
+              Enum.at(@data.scryfall_object["card_faces"], 0)["image_uris"]["normal"]
+            else
+              @data.scryfall_object["image_uris"]["normal"]
+            end
+          }
+          class={["m-1 rounded-lg", @class]}
+          width={@width}
+          alt={@data.scryfall_object["name"]}
+        />
+        <div class="absolute bg-black opacity-0 transition-opacity top-0 bottom-0 left-0 right-0 rounded-lg mt-2 ml-2 h-[calc(100%-13px)] w-[calc(100%-13px)] hover:opacity-70 hover:transition-opacity">
+          <div class="absolute text-white mt-10 text-center text-2xl w-full">
+            <%= @data.scryfall_object["name"] %><br /> X <%= @data.quantity %>
+          </div>
+        </div>
+      </.link>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a matched card with their front image
+
+  ## Examples
+      <.card_match data={@matches} width=251px height=350px />
+  """
+  attr :match, :map, required: true
+  attr :width, :string, default: "200px"
+  attr :class, :string, default: nil
+
+  def card_match(assigns) do
+    ~H"""
+    <.link phx-click="search" phx-value-q={@match["name"]}>
+      <img
+        src={
+          if !@match["image_uris"] and @match["card_faces"] do
+            Enum.at(@match["card_faces"], 0)["image_uris"]["normal"]
+          else
+            @match["image_uris"]["normal"]
+          end
+        }
+        class={["m-1", @class]}
+        width={@width}
+        alt={@match["name"]}
+      />
+    </.link>
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do

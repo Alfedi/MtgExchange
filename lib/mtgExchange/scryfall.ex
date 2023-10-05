@@ -23,6 +23,7 @@ defmodule MtgExchange.Scryfall do
   end
 
   def autocomplete(term) do
-    get(client(), "/cards/autocomplete", query: [q: term])
+    {:ok, %{body: %{"data" => list}}} = get(client(), "/cards/autocomplete", query: [q: term])
+    Enum.slice(list, 0..6)
   end
 end
