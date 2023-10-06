@@ -4,9 +4,6 @@ defmodule MtgExchangeWeb.CardsListLive do
   def render(%{live_action: :me} = assigns) do
     ~H"""
     <div class="absolute">
-      <.header class="text-center">
-        Card Search
-      </.header>
       <form phx-change="suggest">
         <input
           type="text"
@@ -25,7 +22,7 @@ defmodule MtgExchangeWeb.CardsListLive do
         <%= for m <- @matches do %>
           <.card_match
             match={m}
-            class="border-4 border-transparent rounded-2xl hover:border-sky-600 mb-5"
+            class="border-4 border-transparent rounded-2xl mb-5 hover:border-sky-600"
           />
         <% end %>
       </div>
@@ -35,7 +32,7 @@ defmodule MtgExchangeWeb.CardsListLive do
           <.card_match match={@result} width="400px" class="mr-5 mb-5 rounded-3xl" />
           <div class="flex flex-col">
             <p>Quantity</p>
-            <form phx-submit="add_card">
+            <form phx-submit="add_card" phx-change="change_img">
               <input
                 type="number"
                 name="quantity"
@@ -44,13 +41,22 @@ defmodule MtgExchangeWeb.CardsListLive do
                 class="mb-1"
                 value="1"
               />
+              <br />
+              <p>Set</p>
+              <select name="Set" id="set" class="mb-4" required>
+                <%= for s <- @set_variants do %>
+                  <option name="set_name" selected={List.first(@set_variants)["set_name"]}>
+                    <%= s["set_name"] <> " #" <> s["collector_number"] %>
+                  </option>
+                <% end %>
+              </select>
+              <br />
               <.button>Add Card</.button>
             </form>
           </div>
         </div>
       <% end %>
       <!-- Card List -->
-      <hr />
       <.header class="text-center mb-5 mt-3">
         Your Cards
       </.header>
@@ -84,6 +90,7 @@ defmodule MtgExchangeWeb.CardsListLive do
          assign(socket,
            query: nil,
            result: nil,
+           set_variants: nil,
            loading: false,
            matches: [],
            cards: get_user_cards(socket.assigns.current_user.id)
@@ -96,6 +103,7 @@ defmodule MtgExchangeWeb.CardsListLive do
          assign(socket,
            query: nil,
            result: nil,
+           set_variants: nil,
            loading: false,
            matches: [],
            cards: get_user_cards(params["id"]),
@@ -122,7 +130,13 @@ defmodule MtgExchangeWeb.CardsListLive do
     send(self(), {:search, query})
 
     {:noreply,
-     assign(socket, query: query, result: %{id: "Searching..."}, loading: true, matches: [])}
+     assign(socket,
+       query: query,
+       result: %{id: "Searching..."},
+       set_variants: %{},
+       loading: true,
+       matches: []
+     )}
   end
 
   def handle_event("add_card", %{"quantity" => quantity}, socket) do
@@ -139,9 +153,28 @@ defmodule MtgExchangeWeb.CardsListLive do
      |> redirect(to: ~p"/cards")}
   end
 
+  def handle_event("change_img", %{"Set" => set_name}, socket) do
+    {:noreply,
+     socket
+     |> assign(
+       result:
+         Enum.find(socket.assigns.set_variants, fn x ->
+           "#{x["set_name"] <> " #" <> x["collector_number"]}" == set_name
+         end)
+     )
+     |> push_patch(to: ~p"/cards")}
+  end
+
   def handle_info({:search, query}, socket) do
     {:ok, %{body: card}} = MtgExchange.Scryfall.fuzzy_search(query)
-    {:noreply, assign(socket, loading: false, result: card, matches: [])}
+    set_variants = MtgExchange.Scryfall.get_card_set_variants(card["prints_search_uri"])
+
+    {:noreply,
+     assign(socket, loading: false, result: card, set_variants: set_variants, matches: [])}
+  end
+
+  def handle_params(_params, _uri, socket) do
+    {:noreply, assign(socket, result: socket.assigns.result)}
   end
 
   defp get_user_cards(user_id) do

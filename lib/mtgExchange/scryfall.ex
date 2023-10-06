@@ -26,4 +26,9 @@ defmodule MtgExchange.Scryfall do
     {:ok, %{body: %{"data" => list}}} = get(client(), "/cards/autocomplete", query: [q: term])
     Enum.slice(list, 0..6)
   end
+
+  def get_card_set_variants(url) do
+    {:ok, %{body: %{"data" => variants}}} = get(client(), url)
+    variants
+  end
 end
