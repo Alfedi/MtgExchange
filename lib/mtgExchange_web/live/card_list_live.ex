@@ -20,6 +20,15 @@ defmodule MtgExchangeWeb.CardsListLive do
         />
         <.button>Search Card</.button>
       </form>
+      <!-- Lista de matches -->
+      <div class="flex flex-row flex-wrap">
+        <%= for m <- @matches do %>
+          <.card_match
+            match={m}
+            class="border-4 border-transparent rounded-2xl hover:border-sky-600 mb-5"
+          />
+        <% end %>
+      </div>
       <!-- Carta resultado -->
       <%= if @result do %>
         <div class="flex flex-row">
@@ -38,16 +47,6 @@ defmodule MtgExchangeWeb.CardsListLive do
               <.button>Add Card</.button>
             </form>
           </div>
-        </div>
-      <% else %>
-        <!-- Lista de matches -->
-        <div class="flex flex-row flex-wrap">
-          <%= for m <- @matches do %>
-            <.card_match
-              match={m}
-              class="border-4 border-transparent rounded-2xl hover:border-sky-600"
-            />
-          <% end %>
         </div>
       <% end %>
       <!-- Card List -->
