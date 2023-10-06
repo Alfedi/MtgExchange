@@ -585,11 +585,14 @@ defmodule MtgExchangeWeb.CoreComponents do
               @data.scryfall_object["image_uris"]["normal"]
             end
           }
-          class={["m-1 rounded-lg", @class]}
+          class={["m-1 rounded-2xl", @class]}
           width={@width}
           alt={@data.scryfall_object["name"]}
         />
-        <div class="absolute bg-black opacity-0 transition-opacity top-0 bottom-0 left-0 right-0 rounded-lg mt-2 ml-2 h-[calc(100%-13px)] w-[calc(100%-13px)] hover:opacity-70 hover:transition-opacity">
+        <div class={[
+          "absolute bg-black opacity-0 transition-opacity top-0 bottom-0 left-0 right-0 rounded-2xl mt-1 ml-1 mb-1 mr-1 hover:opacity-70 hover:transition-opacity",
+          @class
+        ]}>
           <div class="absolute text-white mt-10 text-center text-2xl w-full">
             <%= @data.scryfall_object["name"] %><br /> X <%= @data.quantity %>
           </div>

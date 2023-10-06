@@ -23,7 +23,7 @@ defmodule MtgExchangeWeb.CardsListLive do
       <!-- Carta resultado -->
       <%= if @result do %>
         <div class="flex flex-row">
-          <.card_match match={@result} width="400px" class="mr-5 mb-5" />
+          <.card_match match={@result} width="400px" class="mr-5 mb-5 rounded-3xl" />
           <div class="flex flex-col">
             <p>Quantity</p>
             <form phx-submit="add_card">
@@ -45,7 +45,7 @@ defmodule MtgExchangeWeb.CardsListLive do
           <%= for m <- @matches do %>
             <.card_match
               match={m}
-              class="border-4 border-transparent rounded-xl hover:border-sky-600"
+              class="border-4 border-transparent rounded-2xl hover:border-sky-600"
             />
           <% end %>
         </div>
